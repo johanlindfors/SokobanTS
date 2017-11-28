@@ -9,14 +9,13 @@ module Sokoban {
     
                 super(game, x, y, 'tiles', 4);
     
-                this.game.physics.arcade.enableBody(this);
+                //this.game.physics.arcade.enableBody(this);
                 
-                this.anchor.setTo(0.5, 0);
+                //this.anchor.setTo(0.5, 0);
     
                 //this.animations.add('walk', [0, 1, 2, 3, 4], 10, true);
     
                 this.game.add.existing(this);
-    
             }
     
             update() {
