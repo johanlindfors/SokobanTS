@@ -2,6 +2,9 @@ module Sokoban {
     
         export class Player extends Phaser.Sprite {
     
+            posX: number;
+            posY: number;
+            
             constructor(game: Phaser.Game, x: number, y: number) {
     
                 super(game, x, y, 'tiles', 4);
@@ -12,7 +15,7 @@ module Sokoban {
     
                 //this.animations.add('walk', [0, 1, 2, 3, 4], 10, true);
     
-                game.add.existing(this);
+                this.game.add.existing(this);
     
             }
     
