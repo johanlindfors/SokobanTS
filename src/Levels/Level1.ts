@@ -24,8 +24,16 @@ module Sokoban {
             this.undoArray = new Array<number[][]>();
         }
 
+        goFullScreen(){
+            this.game.scale.pageAlignHorizontally = true;
+            this.game.scale.pageAlignVertically = true;
+            this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+            //game.scale.setScreenSize(true);
+        }
+
         create() {
             this.game.input.keyboard.addCallbacks(this, this.onDown);
+            this.goFullScreen();
             this.drawLevel();
         }
 
@@ -218,13 +226,10 @@ module Sokoban {
         }
 
 	export class Level1 extends Level {    
-        // background: Phaser.Sprite;
-        // music: Phaser.Sound;
-        
+
         constructor() {
             super();
-            //this.player = new Player(this.game, 130, 284);
-        
+            
             this.level = [[1,1,1,1,1,1,1,1],
                           [1,0,0,1,1,1,1,1],
                           [1,0,0,1,1,1,1,1],
