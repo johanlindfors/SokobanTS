@@ -7,12 +7,11 @@ module Sokoban {
     const PLAYER = 4;
 
     class Level extends Phaser.State {
-
         level: number[][];
         player: Player;
         playerMoving: Boolean;
         tileSize: number = 40;
-        //undoArray: number[][][];
+        undoArray: Array<number[][]>;
         crates: Phaser.Sprite[][];
         // Variables used to create groups. The fist group is called fixedGroup, it will contain
         // all non-moveable elements (everything but crates and player).
@@ -20,8 +19,13 @@ module Sokoban {
         fixedGroup;
         movingGroup;
 
+        constructor(){
+            super();
+            this.undoArray = new Array<number[][]>();
+        }
+
         create() {
-            //this.undoArray = [];
+            this.game.input.keyboard.addCallbacks(this, this.onDown);
             this.drawLevel();
         }
 
@@ -40,7 +44,7 @@ module Sokoban {
             // if destination tile is walkable...
             if(this.isWalkable(this.player.posX+deltaX,this.player.posY+deltaY)){
                 // push current situation in the undo array
-                //this.undoArray.push(this.copyArray(this.level));
+                this.undoArray.push(this.copyArray(this.level));
                 this.movePlayer(deltaX,deltaY);
                 return;
             }
@@ -49,7 +53,7 @@ module Sokoban {
                 // ...if  after the create there's a walkable tils...
                 if(this.isWalkable(this.player.posX + 2 * deltaX, this.player.posY + 2 * deltaY)) {
                     // push current situation in the undo array
-                    //this.undoArray.push(this.copyArray(this.level));
+                    this.undoArray.push(this.copyArray(this.level));
                     // move the crate
                     this.moveCrate(deltaX,deltaY);			  
                     // move the player	
@@ -89,29 +93,40 @@ module Sokoban {
             return newArray;
         }
 
-        update() {
-            if(!this.playerMoving) {   
-                if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-                    this.move(-1,0);                
-                } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-                    this.move(1,0);                
-                } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-                    this.move(0,1);                
-                } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-                    this.move(0,-1);                
-                } 
-                // else if(this.game.input.keyboard.isDown(Phaser.Keyboard.Z)){
-                //     // if there's something to undo...
-                //     if(this.undoArray.length > 0){
-                //         // then undo! and remove the latest move from undoArray
-                //         var undoLevel = this.undoArray.pop();
-                //         this.fixedGroup.destroy();
-                //         this.movingGroup.destroy();
-                //         this.level = [];
-                //         this.level = this.copyArray(undoLevel);
-                //         this.drawLevel();
-                //     }
-                // }
+        onDown(e) {
+            // if the player is not moving...
+            if(!this.playerMoving){
+                switch(e.keyCode){
+                    // left
+                    case 37:
+                        this.move(-1,0);
+                        break;
+                    // up
+                    case 38:
+                        this.move(0,-1);
+                        break;
+                    // right
+                    case 39:
+                        this.move(1,0);
+                        break;
+                    // down
+                    case 40:
+                        this.move(0,1);
+                        break;
+                    // undo
+                    case 46:
+                        // if there's something to undo...
+                        if(this.undoArray.length>0){
+                            // then undo! and remove the latest move from undoArray
+                            var undoLevel = this.undoArray.pop();
+                            this.fixedGroup.destroy();
+                            this.movingGroup.destroy();
+                            this.level = [];
+                            this.level = this.copyArray(undoLevel);
+                            this.drawLevel();
+                        }
+                        break;
+                }
             }
         }
 
@@ -131,7 +146,7 @@ module Sokoban {
                 this.playerMoving = false;
             }, this);
             // updating player old position in level array   
-            this.level[this.player. posY][this.player.posX] - PLAYER;  
+            this.level[this.player. posY][this.player.posX] -= PLAYER;  
             // updating player custom posX and posY attributes
             this.player.posX+=deltaX;
             this.player.posY+=deltaY;
@@ -206,7 +221,8 @@ module Sokoban {
         // background: Phaser.Sprite;
         // music: Phaser.Sound;
         
-        create() {
+        constructor() {
+            super();
             //this.player = new Player(this.game, 130, 284);
         
             this.level = [[1,1,1,1,1,1,1,1],
@@ -217,8 +233,6 @@ module Sokoban {
                           [1,0,0,0,1,0,0,1],
                           [1,0,0,0,1,1,1,1],
                           [1,1,1,1,1,1,1,1]];
-
-            this.drawLevel();
         }
     }
 }
