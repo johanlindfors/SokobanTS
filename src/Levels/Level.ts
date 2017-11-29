@@ -6,7 +6,7 @@ module Sokoban {
     const CRATE = 3;
     const PLAYER = 4;
 
-    class Level extends Phaser.State {
+    export class Level extends Phaser.State {
         level: number[][];
         player: Player;
         tileSize: number = 40;
@@ -18,8 +18,8 @@ module Sokoban {
         fixedGroup;
         movingGroup;
 
-        constructor(){
-            super();
+        init(level: number[][]){
+            this.level = level;
             this.undoArray = new Array<number[][]>();
         }
 
@@ -27,7 +27,6 @@ module Sokoban {
             this.game.scale.pageAlignHorizontally = true;
             this.game.scale.pageAlignVertically = true;
             this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-            //game.scale.setScreenSize(true);
         }
 
         create() {
@@ -139,24 +138,10 @@ module Sokoban {
 
         // function to move the player
         movePlayer(deltaX: number,deltaY: number){
-            // now the player is moving
-            this.player.isMoving = true;
-            // moving with a 1/10s tween
-            var playerTween = this.game.add.tween(this.player);
-            playerTween.to({
-                x:this.player.x + deltaX * this.tileSize,
-                y:this.player.y + deltaY * this.tileSize
-            }, 100, Phaser.Easing.Linear.None,true);
-            // setting a tween callback 
-            playerTween.onComplete.add(function(){
-                // now the player is not moving anymore
-                this.player.isMoving = false;
-            }, this);
             // updating player old position in level array   
             this.level[this.player. posY][this.player.posX] -= PLAYER;  
-            // updating player custom posX and posY attributes
-            this.player.posX+=deltaX;
-            this.player.posY+=deltaY;
+            // let the player move with tweening
+            this.player.move(deltaX, deltaY, this.tileSize);
             // updating player new position in level array 
             this.level[this.player.posY][this.player.posX] += PLAYER;  
             // changing player frame accordingly  
@@ -224,19 +209,19 @@ module Sokoban {
             }
         }
 
-	export class Level1 extends Level {    
+	// export class Level1 extends Level {    
 
-        constructor() {
-            super();
+    //     constructor() {
+    //         super();
             
-            this.level = [[1,1,1,1,1,1,1,1],
-                          [1,0,0,1,1,1,1,1],
-                          [1,0,0,1,1,1,1,1],
-                          [1,0,0,0,0,0,0,1],
-                          [1,1,4,2,1,3,0,1],
-                          [1,0,0,0,1,0,0,1],
-                          [1,0,0,0,1,1,1,1],
-                          [1,1,1,1,1,1,1,1]];
-        }
-    }
+    //         this.level = [[1,1,1,1,1,1,1,1],
+    //                       [1,0,0,1,1,1,1,1],
+    //                       [1,0,0,1,1,1,1,1],
+    //                       [1,0,0,0,0,0,0,1],
+    //                       [1,1,4,2,1,3,0,1],
+    //                       [1,0,0,0,1,0,0,1],
+    //                       [1,0,0,0,1,1,1,1],
+    //                       [1,1,1,1,1,1,1,1]];
+    //     }
+    // }
 }
