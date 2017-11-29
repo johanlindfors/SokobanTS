@@ -4,11 +4,13 @@ module Sokoban {
     
             posX: number;
             posY: number;
+            isMoving: boolean;
             
             constructor(game: Phaser.Game, x: number, y: number) {
     
                 super(game, x, y, 'tiles', 4);
     
+                this.isMoving = false;
                 //this.game.physics.arcade.enableBody(this);
                 
                 //this.anchor.setTo(0.5, 0);

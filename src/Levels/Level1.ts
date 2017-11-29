@@ -9,7 +9,6 @@ module Sokoban {
     class Level extends Phaser.State {
         level: number[][];
         player: Player;
-        playerMoving: Boolean;
         tileSize: number = 40;
         undoArray: Array<number[][]>;
         crates: Phaser.Sprite[][];
@@ -103,7 +102,7 @@ module Sokoban {
 
         onDown(e) {
             // if the player is not moving...
-            if(!this.playerMoving){
+            if(!this.player.isMoving){
                 switch(e.keyCode){
                     // left
                     case 37:
@@ -141,7 +140,7 @@ module Sokoban {
         // function to move the player
         movePlayer(deltaX: number,deltaY: number){
             // now the player is moving
-            this.playerMoving = true;
+            this.player.isMoving = true;
             // moving with a 1/10s tween
             var playerTween = this.game.add.tween(this.player);
             playerTween.to({
@@ -151,7 +150,7 @@ module Sokoban {
             // setting a tween callback 
             playerTween.onComplete.add(function(){
                 // now the player is not moving anymore
-                this.playerMoving = false;
+                this.player.isMoving = false;
             }, this);
             // updating player old position in level array   
             this.level[this.player. posY][this.player.posX] -= PLAYER;  
