@@ -1,4 +1,4 @@
-module Sokoban {
+namespace Sokoban {
 
     export class Boot extends Phaser.State {
 

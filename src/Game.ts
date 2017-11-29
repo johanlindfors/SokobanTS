@@ -1,4 +1,4 @@
-module Sokoban {    
+namespace Sokoban {    
     export class Game extends Phaser.Game {    
         constructor() {    
             super(1000, 600, Phaser.AUTO, 'content', null);

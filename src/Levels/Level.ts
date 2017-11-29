@@ -1,4 +1,7 @@
-module Sokoban {
+/// <reference path="../Objects/Crate.ts" />
+/// <reference path="../Objects/Player.ts" />
+
+namespace Sokoban {
 
     const EMPTY = 0;
     const WALL = 1;
@@ -8,10 +11,10 @@ module Sokoban {
 
     export class Level extends Phaser.State {
         level: number[][];
-        player: Player;
+        player: Sokoban.Player;
         tileSize: number = 40;
         undoArray: Array<number[][]>;
-        crates: Phaser.Sprite[][];
+        crates: Sokoban.Crate[][];
         // Variables used to create groups. The fist group is called fixedGroup, it will contain
         // all non-moveable elements (everything but crates and player).
         // Then we add movingGroup which will contain moveable elements (crates and player)
@@ -45,7 +48,7 @@ module Sokoban {
             return this.level[posY][posX] == CRATE || this.level[posY][posX] == CRATE+SPOT;	
         }
 
-             // function to move the player
+        // function to move the player
         move(deltaX: number, deltaY: number){
             // if destination tile is walkable...
             if(this.isWalkable(this.player.posX+deltaX,this.player.posY+deltaY)){
@@ -70,6 +73,10 @@ module Sokoban {
 
       	// function to move the crate
         moveCrate(deltaX: number,deltaY: number) {
+            
+            var crate = this.crates[this.player.posY + deltaY][this.player.posX + deltaX];
+            crate.move(deltaX, deltaY, this.tileSize);
+
             // moving with a 1/10s tween
             var crateTween = this.game.add.tween(this.crates[this.player.posY + deltaY][this.player.posX + deltaX]);
             crateTween.to({
@@ -187,7 +194,7 @@ module Sokoban {
                         case CRATE:
                         case CRATE+SPOT:
                             // crate creation, both as a sprite and as a crates array item
-                            this.crates[i][j] = this.game.add.sprite(40*j,40*i,"tiles");
+                            this.crates[i][j] = new Crate(this.game, 40*j,40*i);
                             // assigning the crate the proper frame
                             this.crates[i][j].frame = this.level[i][j];
                             // adding the crate to movingGroup
@@ -203,25 +210,9 @@ module Sokoban {
                             tile = this.game.add.sprite(40*j,40*i,"tiles");
                             tile.frame = this.level[i][j];
                             this.fixedGroup.add(tile);
-                        }
                     }
                 }
             }
         }
-
-	// export class Level1 extends Level {    
-
-    //     constructor() {
-    //         super();
-            
-    //         this.level = [[1,1,1,1,1,1,1,1],
-    //                       [1,0,0,1,1,1,1,1],
-    //                       [1,0,0,1,1,1,1,1],
-    //                       [1,0,0,0,0,0,0,1],
-    //                       [1,1,4,2,1,3,0,1],
-    //                       [1,0,0,0,1,0,0,1],
-    //                       [1,0,0,0,1,1,1,1],
-    //                       [1,1,1,1,1,1,1,1]];
-    //     }
-    // }
+    }
 }
