@@ -32,6 +32,10 @@ namespace Sokoban {
         init(level: string){
             this.level = Helpers.parse(level);
         }
+
+        render(){
+            this.game.debug.text(this.game.time.fps.toString(), 10,20);
+        }
         
         goFullScreen(){
             this.game.scale.pageAlignHorizontally = true;
@@ -41,6 +45,7 @@ namespace Sokoban {
 
         create() {
             this.game.input.keyboard.addCallbacks(this, this.onDown);
+            this.game.time.advancedTiming = true;
             this.undoArray = new Array<number[][]>();
             this.crates = [];
             this.player = new Player(this.game,0,0);            
