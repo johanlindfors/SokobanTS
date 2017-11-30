@@ -44,7 +44,7 @@ namespace Sokoban {
 
             let level4String = "#######|#.   .#|# $@$ #|# ### #|# $ $ #|#.   .#|#######";
 
-			this.game.state.start('Level', true, false, level4String);
+			this.game.state.start('GamePlay', true, false, level4String);
 		}
 	}
 }

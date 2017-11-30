@@ -13,7 +13,7 @@ namespace Sokoban {
     const PLAYER = 4;
     const TILESIZE = 40;
 
-    export class Level extends Phaser.State {
+    export class GamePlay extends Phaser.State {
         level: number[][];
         player: Player;
         undoArray: Array<number[][]>;
@@ -108,10 +108,8 @@ namespace Sokoban {
             let crate = this.crates[oldCratePosY][oldCratePosX];
             crate.move(deltaX, deltaY, TILESIZE, function() {
                 let haveWon = this.checkWin();
-                if(haveWon){
-                    let level5String = "#######|#. $ .#|# $@$ #|#. $ .#|#######";
-                    
-                    this.game.state.start('Level', true, false, level5String);
+                if(haveWon){                    
+                    this.game.state.start('Win');
                 }
             }, this);
 
