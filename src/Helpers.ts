@@ -1,5 +1,13 @@
 namespace Sokoban {
     export namespace Helpers {
+        const EMPTY = 0;
+        const WALL = 1;
+        const SPOT = 2;
+        const CRATE = 3;
+        const PLAYER = 4;
+        const TILESIZE = 40;
+    
+        
         // need a recursive function to copy arrays, no need to reinvent the wheel so I got it here
         // http://stackoverflow.com/questions/10941695/copy-an-arbitrary-n-dimensional-array-in-javascript 
         export function copyArray(a){

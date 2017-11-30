@@ -117,22 +117,27 @@ namespace Sokoban {
             // if the player is not moving...
             if(!this.player.isMoving){
                 switch(e.keyCode){
+
                     // left
                     case 37:
                         this.move(-1,0);
                         break;
+
                     // up
                     case 38:
                         this.move(0,-1);
                         break;
+
                     // right
                     case 39:
                         this.move(1,0);
                         break;
+
                     // down
                     case 40:
                         this.move(0,1);
                         break;
+
                     // undo
                     case 46:
                         // if there's something to undo...
@@ -169,6 +174,7 @@ namespace Sokoban {
                     this.crates[i][j] = null;
                     // what do we have at row j, col i?
                     switch(this.level[i][j]){
+
                         case PLAYER:
                         case PLAYER+SPOT:
                             // player creation
@@ -186,6 +192,7 @@ namespace Sokoban {
                             // floor does not move so I am adding it to fixedGroup
                             this.fixedGroup.add(tile);
                             break;
+                
                         case CRATE:
                         case CRATE+SPOT:
                             // crate creation, both as a sprite and as a crates array item
@@ -200,6 +207,7 @@ namespace Sokoban {
                             // floor does not move so I am adding it to fixedGroup
                             this.fixedGroup.add(tile);                              
                             break;
+
                         default:
                             // creation of a simple tile
                             tile = this.game.add.sprite(40*j,40*i,"tiles");
