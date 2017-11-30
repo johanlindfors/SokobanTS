@@ -18,7 +18,7 @@ namespace Sokoban {
             super.move(deltaX, deltaY, tileSize, function() {
                 // now the player is not moving anymore
                 this.isMoving = false;
-            });
+            }, this);
             // updating player custom posX and posY attributes
             this.posX+=deltaX;
             this.posY+=deltaY;

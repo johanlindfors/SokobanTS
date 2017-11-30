@@ -42,6 +42,8 @@ namespace Sokoban {
         create() {
             this.game.input.keyboard.addCallbacks(this, this.onDown);
             this.undoArray = new Array<number[][]>();
+            this.crates = [];
+            this.player = new Player(this.game,0,0);            
             this.goFullScreen();
             this.drawLevel();
         }
@@ -99,7 +101,14 @@ namespace Sokoban {
             let newCratePosY = this.player.posY + 2 * deltaY;
             
             let crate = this.crates[oldCratePosY][oldCratePosX];
-            crate.move(deltaX, deltaY, TILESIZE);
+            crate.move(deltaX, deltaY, TILESIZE, function() {
+                let haveWon = this.checkWin();
+                if(haveWon){
+                    let level5String = "#######|#. $ .#|# $@$ #|#. $ .#|#######";
+                    
+                    this.game.state.start('Level', true, false, level5String);
+                }
+            }, this);
 
             // updating crates array   
             this.crates[newCratePosY][newCratePosX] = crate;
@@ -111,6 +120,18 @@ namespace Sokoban {
 
             // changing crate frame accordingly  
             crate.frame = this.level[newCratePosY][newCratePosX];
+        }
+
+        checkWin() : boolean {
+            for(let i = 0; i < this.level.length; i++) {
+                for(let j = 0; j < this.level[i].length; j++) {
+                    // not positioned a box on every spot
+                    if(this.level[i][j] == SPOT) {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         onDown(e) {
@@ -157,18 +178,18 @@ namespace Sokoban {
 
         drawLevel(){  
             // empty crates array. Don't use crates = [] or it could mess with pointers
-            this.crates = [];     
+            this.crates.length = 0;     
             // adding the two groups to the game
             this.fixedGroup = this.game.add.group();
             this.movingGroup = this.game.add.group();
             // variable used for tile creation
             var tile;
             // looping trough all level rows
-            for(var i=0;i<this.level.length;i++){
+            for(let i = 0; i < this.level.length; i++){
                 // creation of 2nd dimension of crates array
                 this.crates[i]= [];
                  // looping through all level columns
-                for(var j=0;j<this.level[i].length;j++){
+                for(let j = 0; j < this.level[i].length; j++){
                     // by default, there are no crates at current level position, so we set to null its
                     // array entry
                     this.crates[i][j] = null;
@@ -178,7 +199,8 @@ namespace Sokoban {
                         case PLAYER:
                         case PLAYER+SPOT:
                             // player creation
-                            this.player = new Player(this.game, 40*j, 40*i);
+                            this.player.x = TILESIZE * j;
+                            this.player.y = TILESIZE * i;
                             // assigning the player the proper frame
                             this.player.frame = this.level[i][j];
                             // creation of two custom attributes to store player x and y position
@@ -187,8 +209,8 @@ namespace Sokoban {
                             // adding the player to movingGroup
                             this.movingGroup.add(this.player);
                             // since the player is on the floor, I am also creating the floor tile
-                            tile = this.game.add.sprite(40*j,40*i,"tiles");
-                            tile.frame = this.level[i][j]-PLAYER;
+                            tile = this.game.add.sprite(TILESIZE * j, TILESIZE * i, "tiles");
+                            tile.frame = this.level[i][j] - PLAYER;
                             // floor does not move so I am adding it to fixedGroup
                             this.fixedGroup.add(tile);
                             break;
@@ -196,21 +218,21 @@ namespace Sokoban {
                         case CRATE:
                         case CRATE+SPOT:
                             // crate creation, both as a sprite and as a crates array item
-                            this.crates[i][j] = new Crate(this.game, 40*j,40*i);
+                            this.crates[i][j] = new Crate(this.game, TILESIZE * j, TILESIZE * i);
                             // assigning the crate the proper frame
                             this.crates[i][j].frame = this.level[i][j];
                             // adding the crate to movingGroup
                             this.movingGroup.add(this.crates[i][j]);
                             // since the create is on the floor, I am also creating the floor tile
-                            tile = this.game.add.sprite(40*j,40*i,"tiles");
-                            tile.frame = this.level[i][j]-CRATE;
+                            tile = this.game.add.sprite(TILESIZE * j, TILESIZE * i,"tiles");
+                            tile.frame = this.level[i][j] - CRATE;
                             // floor does not move so I am adding it to fixedGroup
                             this.fixedGroup.add(tile);                              
                             break;
 
                         default:
                             // creation of a simple tile
-                            tile = this.game.add.sprite(40*j,40*i,"tiles");
+                            tile = this.game.add.sprite(TILESIZE * j, TILESIZE * i,"tiles");
                             tile.frame = this.level[i][j];
                             this.fixedGroup.add(tile);
                     }
