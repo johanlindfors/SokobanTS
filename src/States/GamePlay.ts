@@ -48,14 +48,14 @@ namespace Sokoban {
             this.game.time.advancedTiming = true;
             this.undoArray = new Array<number[][]>();
             this.crates = [];
-            this.player = new Player(this.game,0,0);            
+            this.player = new Player(this.game,0,0);
             this.goFullScreen();
             this.drawLevel();
         }
 
         // a tile is walkable when it's an empty tile or a spot tile
         isWalkable(posX: number, posY: number) {
-		    return this.level[posY][posX] == EMPTY || this.level[posY][posX] == SPOT;
+            return this.level[posY][posX] == EMPTY || this.level[posY][posX] == SPOT;
         }
 
         // a tile is a crate when it's a... guess what? crate, or it's a crate on its spot
@@ -78,7 +78,7 @@ namespace Sokoban {
                     // push current situation in the undo array
                     this.undoArray.push(Helpers.copyArray(this.level));
                     // move the crate
-                    this.moveCrate(deltaX, deltaY);			  
+                    this.moveCrate(deltaX, deltaY);
                     // move the player	
                     this.movePlayer(deltaX, deltaY);
                 }
@@ -93,7 +93,7 @@ namespace Sokoban {
             this.player.move(deltaX, deltaY, TILESIZE);
             // updating player new position in level array 
             this.level[this.player.posY][this.player.posX] += PLAYER;  
-            // changing player frame accordingly  
+            // changing player frame accordingly
             this.player.frame = this.level[this.player.posY][this.player.posX];
         }
         
@@ -108,20 +108,20 @@ namespace Sokoban {
             let crate = this.crates[oldCratePosY][oldCratePosX];
             crate.move(deltaX, deltaY, TILESIZE, function() {
                 let haveWon = this.checkWin();
-                if(haveWon){                    
+                if(haveWon) {
                     this.game.state.start('Win');
                 }
             }, this);
 
-            // updating crates array   
+            // updating crates array
             this.crates[newCratePosY][newCratePosX] = crate;
             this.crates[oldCratePosY][oldCratePosX] = null;
 
-            // updating crate positions in level array  
+            // updating crate positions in level array
             this.level[oldCratePosY][oldCratePosX] -= CRATE;
             this.level[newCratePosY][newCratePosX] += CRATE;
 
-            // changing crate frame accordingly  
+            // changing crate frame accordingly
             crate.frame = this.level[newCratePosY][newCratePosX];
         }
 
@@ -179,9 +179,9 @@ namespace Sokoban {
             }
         }
 
-        drawLevel(){  
+        drawLevel() {
             // empty crates array. Don't use crates = [] or it could mess with pointers
-            this.crates.length = 0;     
+            this.crates.length = 0;
             // adding the two groups to the game
             this.fixedGroup = this.game.add.group();
             this.movingGroup = this.game.add.group();
@@ -217,7 +217,7 @@ namespace Sokoban {
                             // floor does not move so I am adding it to fixedGroup
                             this.fixedGroup.add(tile);
                             break;
-                
+
                         case CRATE:
                         case CRATE+SPOT:
                             // crate creation, both as a sprite and as a crates array item
@@ -230,7 +230,7 @@ namespace Sokoban {
                             tile = this.game.add.sprite(TILESIZE * j, TILESIZE * i,"tiles");
                             tile.frame = this.level[i][j] - CRATE;
                             // floor does not move so I am adding it to fixedGroup
-                            this.fixedGroup.add(tile);                              
+                            this.fixedGroup.add(tile);
                             break;
 
                         default:
