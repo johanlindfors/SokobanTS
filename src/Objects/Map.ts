@@ -1,5 +1,5 @@
 namespace Sokoban {
-    export class Map extends Phaser.Group {
+    export class Map extends Phaser.GameObjects.Group {
 
     }
 }

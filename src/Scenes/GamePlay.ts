@@ -13,7 +13,11 @@ namespace Sokoban {
     const PLAYER = 4;
     const TILESIZE = 40;
 
-    export class GamePlay extends Phaser.State {
+    class LevelConfig {
+        level: string
+    }
+
+    export class GamePlay extends Phaser.Scene {
         level: number[][];
         player: Player;
         undoArray: Array<number[][]>;
@@ -21,36 +25,43 @@ namespace Sokoban {
         // Variables used to create groups. The fist group is called fixedGroup, it will contain
         // all non-moveable elements (everything but crates and player).
         // Then we add movingGroup which will contain moveable elements (crates and player)
-        fixedGroup: Phaser.Group;
-        movingGroup: Phaser.Group;
+        fixedGroup: Phaser.GameObjects.Group;
+        movingGroup: Phaser.GameObjects.Group;
+        cursors: Phaser.Types.Input.Keyboard.CursorKeys;
 
         // init(level: number[][]){
         //     this.level = level;
         //     this.undoArray = new Array<number[][]>();
         // }
                 
-        init(level: string){
-            this.level = Helpers.parse(level);
+        constructor() {
+            super({
+                key: 'gamePlay'
+            })
         }
 
-        render(){
-            this.game.debug.text(this.game.time.fps.toString(), 10,20);
-        }
-        
-        goFullScreen(){
-            this.game.scale.pageAlignHorizontally = true;
-            this.game.scale.pageAlignVertically = true;
-            this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        init(data: LevelConfig) {
+            this.level = Helpers.parse(data.level);
         }
 
         create() {
-            this.game.input.keyboard.addCallbacks(this, this.onDown);
-            this.game.time.advancedTiming = true;
+            this.cursors = this.input.keyboard.createCursorKeys();
+            // this.game.time.advancedTiming = true;
             this.undoArray = new Array<number[][]>();
             this.crates = [];
-            this.player = new Player(this.game,0,0);
-            this.goFullScreen();
+            this.player = new Player(this,0,0);
+            // this.goFullScreen();
             this.drawLevel();
+        }
+
+        render(){
+            // this.game.debug.text(this.game.time.fps.toString(), 10,20);
+        }
+        
+        goFullScreen(){
+            // this.game.scale.pageAlignHorizontally = true;
+            // this.game.scale.pageAlignVertically = true;
+            // this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         }
 
         // a tile is walkable when it's an empty tile or a spot tile
@@ -94,7 +105,10 @@ namespace Sokoban {
             // updating player new position in level array 
             this.level[this.player.posY][this.player.posX] += PLAYER;  
             // changing player frame accordingly
-            this.player.frame = this.level[this.player.posY][this.player.posX];
+            this.player.frame = this.textures.getFrame(
+                'tiles',
+                this.level[this.player.posY][this.player.posX]
+            );
         }
         
       	// function to move the crate
@@ -107,9 +121,8 @@ namespace Sokoban {
             
             let crate = this.crates[oldCratePosY][oldCratePosX];
             crate.move(deltaX, deltaY, TILESIZE, function() {
-                let haveWon = this.checkWin();
-                if(haveWon) {
-                    this.game.state.start('Win');
+                if(this.checkWin()) {
+                    this.scene.start('win');
                 }
             }, this);
 
@@ -122,7 +135,10 @@ namespace Sokoban {
             this.level[newCratePosY][newCratePosX] += CRATE;
 
             // changing crate frame accordingly
-            crate.frame = this.level[newCratePosY][newCratePosX];
+            crate.frame = this.textures.getFrame(
+                'tiles',
+                this.level[newCratePosY][newCratePosX]
+            );
         }
 
         checkWin() : boolean {
@@ -137,45 +153,33 @@ namespace Sokoban {
             return true;
         }
 
-        onDown(e) {
+        
+        update() {
             // if the player is not moving...
             if(!this.player.isMoving){
-                switch(e.keyCode){
-
-                    // left
-                    case 37:
-                        this.move(-1,0);
-                        break;
-
-                    // up
-                    case 38:
-                        this.move(0,-1);
-                        break;
-
-                    // right
-                    case 39:
-                        this.move(1,0);
-                        break;
-
-                    // down
-                    case 40:
-                        this.move(0,1);
-                        break;
-
-                    // undo
-                    case 46:
-                        // if there's something to undo...
-                        if(this.undoArray.length > 0){
-                            // then undo! and remove the latest move from undoArray
-                            var undoLevel = this.undoArray.pop();
-                            this.fixedGroup.destroy();
-                            this.movingGroup.destroy();
-                            this.level = [];
-                            this.level = Helpers.copyArray(undoLevel);
-                            this.drawLevel();
-                        }
-                        break;
+                if(this.cursors.left.isDown){
+                    this.move(-1,0);
+                } else if(this.cursors.up.isDown) {
+                    this.move(0,-1);
+                } else if(this.cursors.right.isDown) {
+                    this.move(1,0);
+                } else if(this.cursors.down.isDown) {
+                    this.move(0,1);
                 }
+                    // // undo
+                    // case 46:
+                    //     // if there's something to undo...
+                    //     if(this.undoArray.length > 0){
+                    //         // then undo! and remove the latest move from undoArray
+                    //         var undoLevel = this.undoArray.pop();
+                    //         this.fixedGroup.destroy();
+                    //         this.movingGroup.destroy();
+                    //         this.level = [];
+                    //         this.level = Helpers.copyArray(undoLevel);
+                    //         this.drawLevel();
+                    //     }
+                    //     break;
+                // }
             }
         }
 
@@ -183,8 +187,8 @@ namespace Sokoban {
             // empty crates array. Don't use crates = [] or it could mess with pointers
             this.crates.length = 0;
             // adding the two groups to the game
-            this.fixedGroup = this.game.add.group();
-            this.movingGroup = this.game.add.group();
+            this.fixedGroup = this.add.group();
+            this.movingGroup = this.add.group();
             // variable used for tile creation
             var tile;
             // looping trough all level rows
@@ -205,15 +209,21 @@ namespace Sokoban {
                             this.player.x = TILESIZE * j;
                             this.player.y = TILESIZE * i;
                             // assigning the player the proper frame
-                            this.player.frame = this.level[i][j];
+                            this.player.frame = this.textures.getFrame(
+                                'tiles',
+                                this.level[i][j]
+                            );
                             // creation of two custom attributes to store player x and y position
                             this.player.posX = j;
                             this.player.posY = i;
                             // adding the player to movingGroup
                             this.movingGroup.add(this.player);
                             // since the player is on the floor, I am also creating the floor tile
-                            tile = this.game.add.sprite(TILESIZE * j, TILESIZE * i, "tiles");
-                            tile.frame = this.level[i][j] - PLAYER;
+                            tile = this.add.sprite(TILESIZE * j, TILESIZE * i, "tiles");
+                            tile.frame = this.textures.getFrame(
+                                'tiles', 
+                                this.level[i][j] - PLAYER
+                            );
                             // floor does not move so I am adding it to fixedGroup
                             this.fixedGroup.add(tile);
                             break;
@@ -221,22 +231,31 @@ namespace Sokoban {
                         case CRATE:
                         case CRATE+SPOT:
                             // crate creation, both as a sprite and as a crates array item
-                            this.crates[i][j] = new Crate(this.game, TILESIZE * j, TILESIZE * i);
+                            this.crates[i][j] = new Crate(this, TILESIZE * j, TILESIZE * i);
                             // assigning the crate the proper frame
-                            this.crates[i][j].frame = this.level[i][j];
+                            this.crates[i][j].frame = this.textures.getFrame(
+                                'tiles',
+                                this.level[i][j]
+                            );
                             // adding the crate to movingGroup
                             this.movingGroup.add(this.crates[i][j]);
                             // since the create is on the floor, I am also creating the floor tile
-                            tile = this.game.add.sprite(TILESIZE * j, TILESIZE * i,"tiles");
-                            tile.frame = this.level[i][j] - CRATE;
+                            tile = this.add.sprite(TILESIZE * j, TILESIZE * i,"tiles");
+                            tile.frame = this.textures.getFrame(
+                                'tiles',
+                                this.level[i][j] - CRATE
+                            );
                             // floor does not move so I am adding it to fixedGroup
                             this.fixedGroup.add(tile);
                             break;
 
                         default:
                             // creation of a simple tile
-                            tile = this.game.add.sprite(TILESIZE * j, TILESIZE * i,"tiles");
-                            tile.frame = this.level[i][j];
+                            tile = this.add.sprite(TILESIZE * j, TILESIZE * i,"tiles");
+                            tile.frame = this.textures.getFrame(
+                                'tiles',
+                                this.level[i][j]
+                            );
                             this.fixedGroup.add(tile);
                     }
                 }

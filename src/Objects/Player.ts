@@ -6,8 +6,8 @@ namespace Sokoban {
         posY: number;
         isMoving: boolean;
         
-        constructor(game: Phaser.Game, x: number, y: number) {
-            super(game, x, y, 'tiles', 3);
+        constructor(scene: Phaser.Scene, x: number, y: number) {
+            super(scene, x, y, 'tiles', 3);
             this.isMoving = false;
         }
 

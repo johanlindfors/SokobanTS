@@ -1,15 +1,23 @@
 namespace Sokoban {    
     export class Game extends Phaser.Game {    
         constructor() {    
-            super(1000, 600, Phaser.AUTO, 'content', null);
-
-            this.state.add('Boot', Boot, false);
-            this.state.add('Preloader', Preloader, false);
-            // this.state.add('MainMenu', MainMenu, false);
-            this.state.add('GamePlay', GamePlay, false);
-            this.state.add('Win', Win, false)
-
-            this.state.start('Boot');
+            super({
+                width: 1000,
+                height: 600,
+                type: Phaser.AUTO,
+                scale: {
+                    mode: Phaser.Scale.FIT,
+                    parent: 'content',
+                    width: 1000,
+                    height: 600
+                },
+                scene: [
+                    Boot,
+                    Preloader,
+                    GamePlay,
+                    Win
+                ]
+            });
         }    
     }    
 }

@@ -1,13 +1,19 @@
 namespace Sokoban {
 
-	export class Preloader extends Phaser.State {
+	export class Preloader extends Phaser.Scene {
 
-		preloadBar: Phaser.Sprite;
-		background: Phaser.Sprite;
+		preloadBar: Phaser.GameObjects.Sprite;
+		background: Phaser.GameObjects.Sprite;
 		ready: boolean = false;
 
+        constructor() {
+            super({
+                key: 'preloader'
+            })
+        }
+
 		preload() {
-            this.load.spritesheet('tiles', 'assets/tiles.png', 40, 40, 7);
+            this.load.spritesheet('tiles', 'assets/tiles.png', { frameWidth: 40, frameHeight: 40 });
 		}
 
 		create() {
@@ -42,9 +48,9 @@ namespace Sokoban {
                 [1,1,1,1,1,1,1]
             ];
 
-            let level4String = "#######|#.   .#|# $@$ #|# ### #|# $ $ #|#.   .#|#######";
+            var level4String = "#######|#.   .#|# $@$ #|# ### #|# $ $ #|#.   .#|#######";{}
 
-			this.game.state.start('GamePlay', true, false, level4String);
+			this.scene.start('gamePlay', { level: level4String });//, true, false, level4String);
 		}
 	}
 }

@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"target":"ES5",
 		"module": "system",
-		"sourceMap": false,
+		"sourceMap": true,
 		"outFile": "./bin/js/game.js"
 	}
 }

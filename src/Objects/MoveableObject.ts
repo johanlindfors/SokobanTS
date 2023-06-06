@@ -1,23 +1,23 @@
 namespace Sokoban {
     
-    export class MoveableObject extends Phaser.Sprite {
+    export class MoveableObject extends Phaser.GameObjects.Sprite {
         
-        constructor(game: Phaser.Game, x: number, y: number, key: string, frame: number) {
-            super(game, x, y, key, frame);
-            this.game.add.existing(this);
+        constructor(scene: Phaser.Scene, x: number, y: number, key: string, frame: number) {
+            super(scene, x, y, key, frame);
+            this.depth = 1;
+            this.scene.add.existing(this);
         }
 
         move(deltaX: number, deltaY: number, tileSize: number, callback?: Function, listenerContext?: any){
             // move with a 1/10s tween
-            var tween = this.game.add.tween(this);
-            tween.to({
+            const tween = this.scene.tweens.add({
+                targets: this,
+                duration: 100,
                 x: this.x + deltaX * tileSize,
-                y: this.y + deltaY * tileSize
-            }, 100, Phaser.Easing.Linear.None,true);
-            // setting an eventual tween callback 
-            if(callback != null) {
-                tween.onComplete.add(callback, listenerContext);
-            }
+                y: this.y + deltaY * tileSize,
+            });
+            tween.setCallback("onComplete", callback);
+            tween.callbackScope = listenerContext;
         }    
     }
 }
