@@ -1,6 +1,5 @@
 /// <reference path="Scenes/Boot.ts" />
 /// <reference path="Scenes/GamePlay.ts" />
-/// <reference path="Scenes/Preloader.ts" />
 /// <reference path="Scenes/Win.ts" />
 
 let config = {
@@ -15,7 +14,6 @@ let config = {
     },
     scene: [
         Sokoban.Boot,
-        Sokoban.Preloader,
         Sokoban.GamePlay,
         Sokoban.Win
     ]
