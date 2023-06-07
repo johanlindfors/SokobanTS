@@ -9,28 +9,28 @@ namespace Sokoban {
     
         export function parse(input: string) : number[][] {
             let result : number[][] = [];
-            let row: number = 0;
-            result[row] = [];
-            for (let i = 0, col = 0; i <= input.length - 1; i++, col++) {
+            let y = 0;
+            result[y] = [];
+            for (let i = 0, x = 0; i <= input.length - 1; i++, x++) {
                 switch(input[i]){
                     case '|':
-                        result[++row] = [];
-                        col = -1;
+                        result[++y] = [];
+                        x = -1;
                         break;
                     case '#':
-                        result[row][col] = 1;
+                        result[y][x] = 1;
                         break;
                     case '$':
-                        result[row][col] = 3;
+                        result[y][x] = 3;
                         break;
                     case '@':
-                        result[row][col] = 4;
+                        result[y][x] = 4;
                         break;
                     case '.':
-                        result[row][col] = 2;
+                        result[y][x] = 2;
                         break;
                     default:
-                        result[row][col] = 0;
+                        result[y][x] = 0;
                         break;
                 }
             }

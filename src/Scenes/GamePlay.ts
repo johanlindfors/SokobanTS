@@ -36,12 +36,8 @@ namespace Sokoban {
 
         // function to move the player
         move(deltaX: number, deltaY: number){
-            // if destination tile is walkable...
-            if(this.map.isWalkable(this.player.posX + deltaX,this.player.posY + deltaY)){
-                this.movePlayer(deltaX, deltaY);
-            }
             // if the destination tile is a crate... 
-            else if(this.map.isCrate(this.player.posX + deltaX, this.player.posY + deltaY)){
+            if(this.map.isCrate(this.player.posX + deltaX, this.player.posY + deltaY)){
                 // ...if  after the create there's a walkable tils...
                 if(this.map.isWalkable(this.player.posX + 2 * deltaX, this.player.posY + 2 * deltaY)) {
                     // move the crate
@@ -49,6 +45,10 @@ namespace Sokoban {
                     // move the player	
                     this.movePlayer(deltaX, deltaY);
                 }
+            }
+            // or if destination tile is walkable...
+            else if(this.map.isWalkable(this.player.posX + deltaX,this.player.posY + deltaY)){
+                this.movePlayer(deltaX, deltaY);
             }
         }
 
@@ -82,34 +82,24 @@ namespace Sokoban {
             }
         }
 
-        addFixedTile(x: integer, y: integer, frameIndex: integer) {
-            let tile = this.add.sprite(x, y, 'tiles');
-            tile.setOrigin(0,0);
-            tile.frame = this.textures.getFrame(
-                'tiles', 
-                frameIndex
-            );
-            this.fixedGroup.add(tile);
-        }
-
         drawPlayer() {
             // looping trough all level rows
-            for(let i = 0; i < this.map.level.length; i++){
+            for(let y = 0; y < this.map.level.length; y++){
                  // looping through all level columns
-                for(let j = 0; j < this.map.level[i].length; j++){
-                    if( this.map.level[i][j] == PLAYER || 
-                        this.map.level[i][j] == PLAYER+SPOT ){
+                for(let x = 0; x < this.map.level[y].length; x++){
+                    if( this.map.level[y][x] == PLAYER || 
+                        this.map.level[y][x] == PLAYER+SPOT ){
                         // player creation
-                        this.player.x = TILESIZE * j;
-                        this.player.y = TILESIZE * i;
+                        this.player.x = TILESIZE * x;
+                        this.player.y = TILESIZE * y;
                         // assigning the player the proper frame
                         this.player.frame = this.textures.getFrame(
                             'tiles',
-                            this.map.level[i][j]
+                            this.map.level[y][x]
                         );
                         // creation of two custom attributes to store player x and y position
-                        this.player.posX = j;
-                        this.player.posY = i;
+                        this.player.posX = x;
+                        this.player.posY = y;
                     }
                 }
             }
