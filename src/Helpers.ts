@@ -6,18 +6,6 @@ namespace Sokoban {
         const CRATE = 3;
         const PLAYER = 4;
         const TILESIZE = 40;
-
-        // need a recursive function to copy arrays, no need to reinvent the wheel so I got it here
-        // http://stackoverflow.com/questions/10941695/copy-an-arbitrary-n-dimensional-array-in-javascript 
-        export function copyArray(a){
-            let newArray = a.slice(0);
-                for(let i = newArray.length; i>0; i--){
-                if(newArray[i] instanceof Array){
-                    newArray[i] = copyArray(newArray[i]);	
-                }
-            }
-            return newArray;
-        }
     
         export function parse(input: string) : number[][] {
             let result : number[][] = [];
