@@ -14,11 +14,13 @@ namespace Sokoban {
                 fontSize: 50,
                 color: '#FFFFFF'
             });
+
             this.input.keyboard.on('keydown-SPACE', () => {
                 let level5String = "#######|#. $ .#|# $@$ #|#. $ .#|#######";                
                 this.game.scene.start('gamePlay', { level: level5String });
+                this.scene.stop();
             });
-            this.input.keyboard.addCapture('SPACE');
+            this.input.keyboard.addCapture('SPACE');            
         }
     }
 }

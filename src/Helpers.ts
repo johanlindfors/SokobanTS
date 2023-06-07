@@ -27,7 +27,7 @@ namespace Sokoban {
                 switch(input[i]){
                     case '|':
                         result[++row] = [];
-                        let col = -1;
+                        col = -1;
                         break;
                     case '#':
                         result[row][col] = 1;
