@@ -1,11 +1,6 @@
 namespace Sokoban {
 
 	export class Preloader extends Phaser.Scene {
-
-		preloadBar: Phaser.GameObjects.Sprite;
-		background: Phaser.GameObjects.Sprite;
-		ready: boolean = false;
-
         constructor() {
             super({
                 key: 'preloader'
@@ -17,7 +12,7 @@ namespace Sokoban {
 		}
 
 		create() {
-            var level = [[1,1,1,1,1,1,1,1],
+            let level = [[1,1,1,1,1,1,1,1],
                          [1,0,0,1,1,1,1,1],
                          [1,0,0,1,1,1,1,1],
                          [1,0,0,0,0,0,0,1],
@@ -26,7 +21,7 @@ namespace Sokoban {
                          [1,0,0,0,1,1,1,1],
                          [1,1,1,1,1,1,1,1]];
 
-            var newLevel = [
+            let newLevel = [
                 [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
                 [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
                 [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,1],
@@ -40,7 +35,7 @@ namespace Sokoban {
                 [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
             ];
 
-            var simpleLevel = [
+            let simpleLevel = [
                 [1,1,1,1,1,1,1],
                 [1,2,0,3,0,2,1],
                 [1,0,3,4,3,0,1],
@@ -48,7 +43,7 @@ namespace Sokoban {
                 [1,1,1,1,1,1,1]
             ];
 
-            var level4String = "#######|#.   .#|# $@$ #|# ### #|# $ $ #|#.   .#|#######";{}
+            let level4String = "#######|#.   .#|# $@$ #|# ### #|# $ $ #|#.   .#|#######";{}
 
 			this.scene.start('gamePlay', { level: level4String });//, true, false, level4String);
 		}
