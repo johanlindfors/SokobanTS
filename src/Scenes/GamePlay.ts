@@ -36,10 +36,8 @@ namespace Sokoban {
 
         create() {
             this.cursors = this.input.keyboard.createCursorKeys();
-            // this.game.time.advancedTiming = true;
             this.crates = [];
             this.player = new Player(this, 0, 0);
-            // this.goFullScreen();
             this.drawLevel();
         }
 
@@ -146,6 +144,7 @@ namespace Sokoban {
 
         addFixedTile(x: integer, y: integer, frameIndex: integer) {
             let tile = this.add.sprite(x, y, 'tiles');
+            tile.setOrigin(0,0);
             tile.frame = this.textures.getFrame(
                 'tiles', 
                 frameIndex

@@ -4,6 +4,7 @@ namespace Sokoban {
         
         constructor(scene: Phaser.Scene, x: number, y: number, key: string, frame: number) {
             super(scene, x, y, key, frame);
+            this.setOrigin(0,0);
             this.depth = 1;
             this.scene.add.existing(this);
         }
