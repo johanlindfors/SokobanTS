@@ -50,9 +50,10 @@ namespace Sokoban {
                 [1,1,1,1,1,1,1]
             ];
 
-            let level4String = "#######|#.   .#|# $@$ #|# ### #|# $ $ #|#.   .#|#######";{}
+            let level4String = "#######|#.   .#|# $@$ #|# ### #|# $ $ #|#.   .#|#######";
+            let level5String = "##########|##### ####|#####.####|#####$####|####  ## #|#### $.$ #|####@$   #|#### .## #|##      .#|##########";
 
-			this.scene.start('gamePlay', { level: level4String });//, true, false, level4String);
+			this.scene.start('gamePlay', { level: level5String });//, true, false, level4String);
 		}
 	}
 }
