@@ -12,10 +12,9 @@ namespace Sokoban {
     }
 
     export class GamePlay extends Phaser.Scene {
-        player: Player;
-        fixedGroup: Phaser.GameObjects.Group;
-        cursors: Phaser.Types.Input.Keyboard.CursorKeys;
         map: Map;
+        player: Player;
+        cursors: Phaser.Types.Input.Keyboard.CursorKeys;
 
         constructor() {
             super({
@@ -60,11 +59,6 @@ namespace Sokoban {
             this.player.move(deltaX, deltaY, TILESIZE);
             // updating player new position in level array
             this.map.level[this.player.posY][this.player.posX] += PLAYER;
-            // changing player frame accordingly
-            // this.player.frame = this.textures.getFrame(
-            //     'tiles',
-            //     this.map.level[this.player.posY][this.player.posX]
-            // );
         }
 
         update() {
@@ -100,11 +94,6 @@ namespace Sokoban {
                         // player creation
                         this.player.x = TILESIZE * x;
                         this.player.y = TILESIZE * y;
-                        // assigning the player the proper frame
-                        // this.player.frame = this.textures.getFrame(
-                        //     'tiles',
-                        //     this.map.level[y][x]
-                        // );
                         // creation of two custom attributes to store player x and y position
                         this.player.posX = x;
                         this.player.posY = y;
