@@ -5,4 +5,6 @@ namespace Sokoban {
     export const CRATE = 3;
     export const PLAYER = 4;
     export const TILESIZE = 40;
+    export const WIDTH = 1000;
+    export const HEIGHT = 600;
 }

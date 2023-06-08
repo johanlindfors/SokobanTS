@@ -1,12 +1,5 @@
 namespace Sokoban {
-    export namespace Helpers {
-        const EMPTY = 0;
-        const WALL = 1;
-        const SPOT = 2;
-        const CRATE = 3;
-        const PLAYER = 4;
-        const TILESIZE = 40;
-    
+    export namespace Helpers {    
         export function parse(input: string) : number[][] {
             let result : number[][] = [];
             let y = 0;

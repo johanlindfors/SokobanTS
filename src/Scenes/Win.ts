@@ -14,7 +14,6 @@ namespace Sokoban {
                 fontSize: 50,
                 color: '#FFFFFF'
             });
-
             this.input.keyboard.on('keydown-SPACE', () => {
                 let level5String = "#######|#. $ .#|# $@$ #|#. $ .#|#######";                
                 this.game.scene.start('gamePlay', { level: level5String });

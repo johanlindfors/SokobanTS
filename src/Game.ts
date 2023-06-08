@@ -3,14 +3,14 @@
 /// <reference path="Scenes/Win.ts" />
 
 let config = {
-    width: 1000,
-    height: 600,
+    width: Sokoban.WIDTH,
+    height: Sokoban.HEIGHT,
     type: Phaser.AUTO,
     scale: {
         mode: Phaser.Scale.FIT,
         parent: 'content',
-        width: 1000,
-        height: 600
+        width: Sokoban.WIDTH,
+        height: Sokoban.HEIGHT
     },
     scene: [
         Sokoban.Boot,

@@ -7,16 +7,16 @@ namespace Sokoban {
             })
         }
 
-		preload() {
-            this.load.spritesheet('tiles', 'assets/tiles.png', { frameWidth: 40, frameHeight: 40 });
-		}
-
         init() {
             if (!this.game.device.os.desktop) {
                 this.scale.scaleMode = Phaser.Scale.RESIZE;
             }    
-            //this.scale.autoCenter = Phaser.Scale.CENTER_BOTH;
+            this.scale.autoCenter = Phaser.Scale.CENTER_BOTH;
         }
+
+        preload() {
+            this.load.spritesheet('tiles', 'assets/tiles.png', { frameWidth: 40, frameHeight: 40 });
+		}
 
 		create() {
             let level = [[1,1,1,1,1,1,1,1],
