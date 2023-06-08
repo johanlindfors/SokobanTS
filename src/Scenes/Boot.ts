@@ -50,10 +50,24 @@ namespace Sokoban {
                 [1,1,1,1,1,1,1]
             ];
 
+            let test = "##########|##########|##########|##########|##@#######|# $   ####|# ..$$ ###|#  $.  ###|#. #    ##|##########|"
             let level4String = "#######|#.   .#|# $@$ #|# ### #|# $ $ #|#.   .#|#######";
             let level5String = "##########|##### ####|#####.####|#####$####|####  ## #|#### $.$ #|####@$   #|#### .## #|##      .#|##########";
 
-			this.scene.start('gamePlay', { level: level5String });//, true, false, level4String);
+            let client = new ApiClient();
+
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const levelParam = urlParams.get('level');
+            
+            const id = levelParam ? parseInt(levelParam) : Math.floor(Math.random() * 999);
+
+            //let id = Math.floor(Math.random() * 999);
+            client.getLevel(id)
+                .then(levelString => {
+                    console.log(levelString);
+                    this.scene.start('gamePlay', { level: levelString });
+                });
 		}
 	}
 }

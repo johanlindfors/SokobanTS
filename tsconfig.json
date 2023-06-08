@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target":"ES5",
+		"target":"ES2015",
 		"module": "system",
 		"sourceMap": true,
 		"outFile": "./bin/js/game.js"
