@@ -33,7 +33,6 @@ namespace Sokoban {
             this.drawPlayer();
         }
 
-        // function to move the player
         move(deltaX: number, deltaY: number){
             // if the destination tile is a crate...
             if(this.map.isCrate(this.player.posX + deltaX, this.player.posY + deltaY)){
@@ -62,26 +61,27 @@ namespace Sokoban {
         }
 
         update() {
-            // if the player is not moving...
-            if(!this.player.isMoving){
-                if(this.cursors.left.isDown) {
-                    this.player.isLookingForward = true;
-                    this.move(-1,0);
-                } else if(this.cursors.up.isDown) {
-                    this.player.isLookingForward = false;
-                    this.move(0,-1);
-                } else if(this.cursors.right.isDown) {
-                    this.player.isLookingForward = true;
-                    this.move(1,0);
-                } else if(this.cursors.down.isDown) {
-                    this.player.isLookingForward = true;
-                    this.move(0,1);
-                }
-                this.player.frame = this.textures.getFrame(
-                    'tiles',
-                    this.player.isLookingForward ? PLAYER : PLAYER+SPOT
-                );
+            if(this.player.isMoving) {
+                return;
             }
+            
+            if(this.cursors.left.isDown) {
+                this.player.isLookingForward = true;
+                this.move(-1,0);
+            } else if(this.cursors.up.isDown) {
+                this.player.isLookingForward = false;
+                this.move(0,-1);
+            } else if(this.cursors.right.isDown) {
+                this.player.isLookingForward = true;
+                this.move(1,0);
+            } else if(this.cursors.down.isDown) {
+                this.player.isLookingForward = true;
+                this.move(0,1);
+            }
+            this.player.frame = this.textures.getFrame(
+                'tiles',
+                this.player.isLookingForward ? PLAYER : PLAYER+SPOT
+            );
         }
 
         drawPlayer() {
@@ -97,6 +97,7 @@ namespace Sokoban {
                         // creation of two custom attributes to store player x and y position
                         this.player.posX = x;
                         this.player.posY = y;
+                        return;
                     }
                 }
             }
