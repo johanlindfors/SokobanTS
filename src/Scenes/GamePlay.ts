@@ -23,7 +23,9 @@ namespace Sokoban {
         }
 
         init(data: LevelConfig) {
-            this.map = new Map(this, Helpers.parse(data.level));
+            let width = 10;
+            let height = 10;
+            this.map = new Map(this, Helpers.parse(data.level, width, height), width, height);
         }
 
         create() {
@@ -53,11 +55,11 @@ namespace Sokoban {
         // function to move the player
         movePlayer(deltaX: number, deltaY: number){
             // updating player old position in level array
-            this.map.level[this.player.posY][this.player.posX] -= PLAYER;
+            this.map.level[this.player.posY * this.map.width + this.player.posX] -= PLAYER;
             // let the player move with tweening
             this.player.move(deltaX, deltaY, TILESIZE);
             // updating player new position in level array
-            this.map.level[this.player.posY][this.player.posX] += PLAYER;
+            this.map.level[this.player.posY * this.map.width + this.player.posX] += PLAYER;
         }
 
         update() {
@@ -86,19 +88,16 @@ namespace Sokoban {
 
         drawPlayer() {
             // looping trough all level rows
-            for(let y = 0; y < this.map.level.length; y++){
-                 // looping through all level columns
-                for(let x = 0; x < this.map.level[y].length; x++){
-                    if( this.map.level[y][x] == PLAYER ||
-                        this.map.level[y][x] == PLAYER+SPOT ){
-                        // player creation
-                        this.player.x = TILESIZE * x;
-                        this.player.y = TILESIZE * y;
-                        // creation of two custom attributes to store player x and y position
-                        this.player.posX = x;
-                        this.player.posY = y;
-                        return;
-                    }
+            for(let index = 0; index < this.map.level.length; index++) {
+                if( this.map.level[index] == PLAYER ||
+                    this.map.level[index] == PLAYER+SPOT ){
+                    // creation of two custom attributes to store player x and y position
+                    this.player.posX = index % this.map.width;
+                    this.player.posY = (index - this.player.posX) / this.map.width;
+                    // player creation
+                    this.player.x = this.player.posX * TILESIZE;
+                    this.player.y = this.player.posY * TILESIZE;
+                    return;
                 }
             }
         }

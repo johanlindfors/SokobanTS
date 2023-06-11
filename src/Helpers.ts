@@ -1,29 +1,25 @@
 namespace Sokoban {
     export namespace Helpers {    
-        export function parse(input: string) : number[][] {
-            let result : number[][] = [];
-            let y = 0;
-            result[y] = [];
-            for (let i = 0, x = 0; i <= input.length - 1; i++, x++) {
-                switch(input[i]){
+        export function parse(input: string, width: number, height: number) : number[] {
+            let result : number[] = [];
+            for (let index = 0, newIndex = 0; index < input.length; index++) {
+                switch(input[index]) {
                     case '|':
-                        result[++y] = [];
-                        x = -1;
                         break;
                     case '#':
-                        result[y][x] = 1;
+                        result[newIndex++] = 1;
                         break;
                     case '$':
-                        result[y][x] = 3;
+                        result[newIndex++] = 3;
                         break;
                     case '@':
-                        result[y][x] = 4;
+                        result[newIndex++] = 4;
                         break;
                     case '.':
-                        result[y][x] = 2;
+                        result[newIndex++] = 2;
                         break;
                     default:
-                        result[y][x] = 0;
+                        result[newIndex++] = 0;
                         break;
                 }
             }
