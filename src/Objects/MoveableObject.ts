@@ -10,10 +10,9 @@ namespace Sokoban {
         }
 
         move(deltaX: number, deltaY: number, tileSize: number, callback?: Function, listenerContext?: any){
-            // move with a 1/10s tween
             const tween = this.scene.tweens.add({
                 targets: this,
-                duration: 100,
+                duration: 150,
                 x: this.x + deltaX * tileSize,
                 y: this.y + deltaY * tileSize,
             });

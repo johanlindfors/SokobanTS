@@ -14,14 +14,11 @@ namespace Sokoban {
         }
 
         move(deltaX: number, deltaY: number, tileSize: number){
-            // now the player is moving
             this.isMoving = true;
-            // moving with a 1/10s tween
             super.move(deltaX, deltaY, tileSize, function() {
-                // now the player is not moving anymore
                 this.isMoving = false;
             }, this);
-            // updating player custom posX and posY attributes
+
             this.posX+=deltaX;
             this.posY+=deltaY;
         }    
