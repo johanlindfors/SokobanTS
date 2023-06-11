@@ -1,15 +1,10 @@
 /// <reference path="../Objects/Crate.ts" />
 /// <reference path="../Objects/Player.ts" />
-/// <reference path="../Helpers.ts" />
 /// <reference path="../Constants.ts" />
 
 import Helpers = Sokoban.Helpers;
 
 namespace Sokoban {
-
-    class LevelConfig {
-        level: string
-    }
 
     export class GamePlay extends Phaser.Scene {
         map: Map;
@@ -22,10 +17,8 @@ namespace Sokoban {
             })
         }
 
-        init(data: LevelConfig) {
-            let width = 10;
-            let height = 10;
-            this.map = new Map(this, Helpers.parse(data.level, width, height), width, height);
+        init(data: MapConfig) {
+            this.map = new Map(this, data);
         }
 
         create() {
@@ -66,7 +59,6 @@ namespace Sokoban {
             if(this.player.isMoving) {
                 return;
             }
-            
             if(this.cursors.left.isDown) {
                 this.player.isLookingForward = true;
                 this.move(-1,0);

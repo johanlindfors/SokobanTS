@@ -1,18 +1,25 @@
 /// <reference path="../Constants.ts" />
+/// <reference path="../Helpers.ts" />
 
 namespace Sokoban {
+    export interface MapConfig {
+        level: string;
+        id: number;
+    }
+
     export class Map extends Phaser.GameObjects.Group {
         level: number[];
         crates: Crate[];
         width: number;
         height: number;
 
-        constructor(scene: Phaser.Scene, level: number[], width: number, height: number) {
+        constructor(scene: Phaser.Scene, mapConfig: MapConfig) {
             super(scene);
-            this.level = level;
+            let parsedMap = Helpers.parse(mapConfig.level);
+            this.level = parsedMap[0];
+            this.width = parsedMap[1];
+            this.height = parsedMap[2];
             this.crates = [];
-            this.width = width;
-            this.height = height;
         }
 
         // a tile is walkable when it's an empty tile or a spot tile
@@ -30,12 +37,7 @@ namespace Sokoban {
         // function to move the crate
         moveCrate(deltaX: number, deltaY: number, playerX: number, playerY: number) {
             let oldCrateIndex = (playerY + deltaY) * this.width + playerX + deltaX;
-            // let oldCratePosX = playerX + deltaX;
-            // let oldCratePosY = playerY + deltaY;
-
             let newCrateIndex = (playerY + 2 * deltaY) * this.width + playerX + 2 * deltaX;
-            // let newCratePosX = playerX + 2 * deltaX;
-            // let newCratePosY = playerY + 2 * deltaY;
 
             let crate = this.crates[oldCrateIndex];
             crate.move(deltaX, deltaY, TILESIZE, function() {
@@ -82,7 +84,7 @@ namespace Sokoban {
         drawLevel() {
             // looping trough all level rows
             for(let index = 0; index < this.level.length; index++){
-                 // looping through all level columns
+                // looping through all level columns
                 // by default, there are no crates at current level position, so we set to null its
                 // array entry
                 this.crates[index] = null;

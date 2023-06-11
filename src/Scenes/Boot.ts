@@ -27,9 +27,9 @@ namespace Sokoban {
 
             let client = new ApiClient();
             client.getLevel(id)
-                .then(levelString => {
-                    console.log(levelString);
-                    this.scene.start('gamePlay', { level: levelString });
+                .then(level => {
+                    this.scene.start('gamePlay', { level, id });
+                    this.scene.remove('boot');
                 });
 		}
 	}

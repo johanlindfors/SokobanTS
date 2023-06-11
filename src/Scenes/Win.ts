@@ -9,17 +9,20 @@ namespace Sokoban {
         }
 
         create() {
-            this.add.text(100,100,'You won!', { 
+            this.add.text(WIDTH / 2,HEIGHT / 2,'You won!', {
                 fontFamily: 'Arial',
                 fontSize: 50,
-                color: '#FFFFFF'
+                color: '#FFFFFF',
             });
             this.input.keyboard.on('keydown-SPACE', () => {
-                let level5String = "#######|#. $ .#|# $@$ #|#. $ .#|#######";                
-                this.game.scene.start('gamePlay', { level: level5String });
-                this.scene.stop();
+                const id = Math.floor(Math.random() * 999);
+                let client = new ApiClient();
+                client.getLevel(id)
+                    .then(level => {
+                        window.location.href = "/bin/?level=" + id;
+                    });
             });
-            this.input.keyboard.addCapture('SPACE');            
+            this.input.keyboard.addCapture('SPACE');
         }
     }
 }

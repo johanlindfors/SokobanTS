@@ -1,10 +1,15 @@
 namespace Sokoban {
     export namespace Helpers {    
-        export function parse(input: string, width: number, height: number) : number[] {
+        export function parse(input: string) : [number[], number, number] {
             let result : number[] = [];
+            let width = 0;
+            let height = 0;
             for (let index = 0, newIndex = 0; index < input.length; index++) {
                 switch(input[index]) {
                     case '|':
+                        if(width == 0)
+                            width = index;
+                        height++;
                         break;
                     case '#':
                         result[newIndex++] = 1;
@@ -23,7 +28,7 @@ namespace Sokoban {
                         break;
                 }
             }
-            return result;
+            return [result, width, height];
         }
     }
 }
