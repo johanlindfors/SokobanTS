@@ -9,11 +9,13 @@ namespace Sokoban {
         }
 
         create() {
-            this.add.text(WIDTH / 2,HEIGHT / 2,'You won!', {
+            let text = this.add.text(WIDTH / 2,HEIGHT / 2,'You won!', {
                 fontFamily: 'Arial',
                 fontSize: 50,
                 color: '#FFFFFF',
+                align: 'center'
             });
+            text.setOrigin(0.5, 0.5);
             this.input.keyboard.on('keydown-SPACE', () => {
                 const id = Math.floor(Math.random() * 999);
                 let client = new ApiClient();
