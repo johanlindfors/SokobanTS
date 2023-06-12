@@ -9,12 +9,12 @@ namespace Sokoban {
             this.scene.add.existing(this);
         }
 
-        move(deltaX: number, deltaY: number, tileSize: number, callback?: Function, listenerContext?: any){
+        move(deltaX: number, deltaY: number, callback?: Function, listenerContext?: any){
             const tween = this.scene.tweens.add({
                 targets: this,
                 duration: 150,
-                x: this.x + deltaX * tileSize,
-                y: this.y + deltaY * tileSize,
+                x: this.x + deltaX * TILESIZE,
+                y: this.y + deltaY * TILESIZE,
             });
             tween.setCallback("onComplete", callback);
             tween.callbackScope = listenerContext;

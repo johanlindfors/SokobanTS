@@ -38,7 +38,7 @@ namespace Sokoban {
             let newCrateIndex = (playerY + 2 * deltaY) * this.width + playerX + 2 * deltaX;
 
             let crate = this.crates[oldCrateIndex];
-            crate.move(deltaX, deltaY, TILESIZE, function() {
+            crate.move(deltaX, deltaY, function() {
                 if(this.checkWin()) {
                     this.scene.scene.start('win');
                 }
@@ -75,7 +75,7 @@ namespace Sokoban {
             this.add(tile);
         }
 
-        drawLevel() {
+        initialize() {
             for(let index = 0; index < this.level.length; index++){
                 this.crates[index] = null;
                 let x = index % this.width;
@@ -92,7 +92,7 @@ namespace Sokoban {
 
                     case CRATE:
                     case CRATE+SPOT:
-                        let crate = new Crate(this.scene, x * TILESIZE, y * TILESIZE);
+                        let crate = new Crate(this.scene, x, y);
                         crate.frame = this.scene.textures.getFrame(
                             'tiles',
                             this.level[index]

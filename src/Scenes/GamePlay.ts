@@ -19,12 +19,13 @@ namespace Sokoban {
 
         init(data: MapConfig) {
             this.map = new Map(this, data);
+            this.player = new Player(this);
         }
 
         create() {
             this.cursors = this.input.keyboard.createCursorKeys();
-            this.map.drawLevel();
-            this.drawPlayer();
+            this.map.initialize();
+            this.player.initialize(this.map.playerStartIndex, this.map.width);
         }
 
         move(deltaX: number, deltaY: number){
@@ -40,7 +41,7 @@ namespace Sokoban {
         }
 
         movePlayer(deltaX: number, deltaY: number){
-            this.player.move(deltaX, deltaY, TILESIZE);
+            this.player.move(deltaX, deltaY);
         }
 
         update() {
@@ -64,17 +65,6 @@ namespace Sokoban {
                 'tiles',
                 this.player.isLookingForward ? PLAYER : PLAYER+SPOT
             );
-        }
-
-        drawPlayer() {
-            this.player = new Player(this, 0, 0);
-            let index = this.map.playerStartIndex;
-
-            this.player.posX = index % this.map.width;
-            this.player.posY = (index - this.player.posX) / this.map.width;
-
-            this.player.x = this.player.posX * TILESIZE;
-            this.player.y = this.player.posY * TILESIZE;
         }
     }
 }
