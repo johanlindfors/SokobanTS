@@ -1,5 +1,6 @@
 /// <reference path="../Constants.ts" />
 /// <reference path="../Helpers.ts" />
+/// <reference path="Crate.ts" />
 
 namespace Sokoban {
     export interface MapConfig {

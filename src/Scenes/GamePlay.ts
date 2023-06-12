@@ -2,8 +2,6 @@
 /// <reference path="../Objects/Player.ts" />
 /// <reference path="../Constants.ts" />
 
-import Helpers = Sokoban.Helpers;
-
 namespace Sokoban {
 
     export class GamePlay extends Phaser.Scene {
@@ -31,7 +29,7 @@ namespace Sokoban {
             this.cursors = this.input.keyboard.createCursorKeys();
             this.map.initialize();
             this.player.initialize(this.map.playerStartIndex, this.map.width);
-            this.status = this.add.text(0, 0, this.map.id + " : " + this.playerMoves + " / " + this.cratePushes, {
+            this.status = this.add.text(5, 5, this.map.id + " : " + this.playerMoves + " / " + this.cratePushes, {
                 fontFamily: 'Arial',
                 fontSize: 20,
                 color: '#FFFFFF'

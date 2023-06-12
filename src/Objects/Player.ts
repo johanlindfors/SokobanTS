@@ -1,3 +1,5 @@
+/// <reference path="MoveableObject.ts" />
+
 namespace Sokoban {
     
     export class Player extends MoveableObject {

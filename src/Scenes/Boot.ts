@@ -1,3 +1,5 @@
+/// <reference path="../API/ApiClient.ts" />
+
 namespace Sokoban {
 
 	export class Boot extends Phaser.Scene {
