@@ -10,6 +10,9 @@ namespace Sokoban {
         map: Map;
         player: Player;
         cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+        playerMoves: number;
+        cratePushes: number;
+        status: Phaser.GameObjects.Text;
 
         constructor() {
             super({
@@ -20,12 +23,19 @@ namespace Sokoban {
         init(data: MapConfig) {
             this.map = new Map(this, data);
             this.player = new Player(this);
+            this.playerMoves = 0;
+            this.cratePushes = 0;
         }
 
         create() {
             this.cursors = this.input.keyboard.createCursorKeys();
             this.map.initialize();
             this.player.initialize(this.map.playerStartIndex, this.map.width);
+            this.status = this.add.text(0, 0, this.map.id + " : " + this.playerMoves + " / " + this.cratePushes, {
+                fontFamily: 'Arial',
+                fontSize: 20,
+                color: '#FFFFFF'
+            });
         }
 
         move(deltaX: number, deltaY: number){
@@ -33,14 +43,21 @@ namespace Sokoban {
                 if(this.map.isWalkable(this.player.posX + 2 * deltaX, this.player.posY + 2 * deltaY)) {
                     this.map.moveCrate(deltaX, deltaY, this.player.posX, this.player.posY);
                     this.movePlayer(deltaX, deltaY);
+                    this.cratePushes++;
                 }
             }
             else if(this.map.isWalkable(this.player.posX + deltaX,this.player.posY + deltaY)){
                 this.movePlayer(deltaX, deltaY);
             }
+            this.playerMoves++
+            this.updateStatus();
         }
 
-        movePlayer(deltaX: number, deltaY: number){
+        updateStatus()  {
+            this.status.text = this.map.id + " : " + this.playerMoves + " / " + this.cratePushes;
+        }
+
+        movePlayer(deltaX: number, deltaY: number) {
             this.player.move(deltaX, deltaY);
         }
 

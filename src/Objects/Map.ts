@@ -13,10 +13,12 @@ namespace Sokoban {
         playerStartIndex: number;
         width: number;
         height: number;
+        id: number;
 
         constructor(scene: Phaser.Scene, mapConfig: MapConfig) {
             super(scene);
             let parsedMap = Helpers.parse(mapConfig.level);
+            this.id = mapConfig.id;
             this.level = parsedMap[0];
             this.width = parsedMap[1];
             this.height = parsedMap[2];
